@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mi Perfil – Proyecto Vida Saludable</title>
+  <!-- Enlazamos el mismo archivo de estilos compartido -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ========================================
+       ENCABEZADO PRINCIPAL (compartido)
+       ======================================== -->
+  <header>
+    <div class="logo">
+      <div class="logo-icono">🌿</div>
+      Vida Saludable
+    </div>
+
+    <!-- La página activa es "Mi Perfil" -->
+    <nav>
+      <a href="index.html">Inicio</a>
+      <a href="perfil.html" class="activo">Mi Perfil</a>
+      <a href="#">Entrenamiento</a>
+    </nav>
+  </header>
+
+  <!-- ========================================
+       CONTENIDO PRINCIPAL
+       ======================================== -->
+  <main>
+    <div class="pagina-perfil">
+
+      <!-- Título y descripción de la página -->
+      <p class="seccion-etiqueta">Submenú</p>
+      <h1>Mi Perfil</h1>
+      <p>
+        Completa tus datos para que el sistema te clasifique y te recomiende
+        el plan de movimiento ideal para tu categoría.
+      </p>
+
+      <!-- ----------------------------------------
+           FORMULARIO DE REGISTRO
+           Captura los datos del estudiante
+           ---------------------------------------- -->
+      <div class="formulario-card">
+        <form id="formulario-perfil">
+
+          <!-- SECCIÓN 1: Datos personales del estudiante -->
+          <div class="form-seccion">
+            <p class="form-seccion-titulo">📋 Datos del estudiante</p>
+
+            <!-- Campo Nombre completo -->
+            <div class="campo-grupo">
+              <label for="nombre">Nombre completo</label>
+              <input
+                type="text"
+                id="nombre"
+                name="nombre"
+                placeholder="Ej: Laura Martínez"
+                required
+              />
+            </div>
+
+            <!-- Grid de dos columnas: Edad y Grado -->
+            <div class="grid-2">
+
+              <!-- Campo Edad -->
+              <div class="campo-grupo">
+                <label for="edad">Edad</label>
+                <input
+                  type="number"
+                  id="edad"
+                  name="edad"
+                  placeholder="Ej: 14"
+                  min="6"
+                  max="20"
+                  required
+                />
+              </div>
+
+              <!-- Campo Grado escolar -->
+              <div class="campo-grupo">
+                <label for="grado">Grado</label>
+                <select id="grado" name="grado" required>
+                  <option value="" disabled selected>Seleccionar…</option>
+                  <option value="4">4°</option>
+                  <option value="5">5°</option>
+                  <option value="6">6°</option>
+                  <option value="7">7°</option>
+                  <option value="8">8°</option>
+                  <option value="9">9°</option>
+                  <option value="10">10°</option>
+                  <option value="11">11°</option>
+                </select>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- SECCIÓN 2: Registro de hidratación diaria -->
+          <div class="form-seccion">
+            <p class="form-seccion-titulo">💧 Hidratación diaria</p>
+
+            <!-- Campo vasos de agua con barra de progreso visual -->
+            <div class="campo-grupo">
+              <label for="vasos">¿Cuántos vasos de agua has tomado hoy?</label>
+              <input
+                type="number"
+                id="vasos"
+                name="vasos"
+                placeholder="0"
+                min="0"
+                max="15"
+              />
+            </div>
+
+            <!-- Barra visual de progreso hacia la meta de 8 vasos -->
+            <div class="hidratacion-meta">
+              <span id="progreso-texto">0 de 8 vasos</span>
+              <span>Meta: 2 litros</span>
+            </div>
+            <div class="barra-progreso">
+              <div class="barra-relleno" id="barra"></div>
+            </div>
+            <p class="hidratacion-nota" id="nota-hidratacion">
+              Ingresa cuántos vasos tomaste para ver tu progreso.
+            </p>
+
+          </div>
+
+          <!-- SECCIÓN 3: Botón de envío del formulario -->
+          <div class="form-seccion">
+            <button type="submit" class="btn btn-verde">
+              ✅ Registrar mi perfil
+            </button>
+          </div>
+
+          <!-- Mensaje de confirmación (oculto hasta que se envía el formulario) -->
+          <div id="mensaje-confirmacion" style="display:none; text-align:center; padding: 1rem; background: var(--verde-claro); border-radius: var(--radio); color: var(--verde-principal); font-weight: 600; margin-top: 1rem;">
+            🎉 ¡Datos registrados! Pronto podrás ver tu progreso en el Tablero Visual.
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <!-- ========================================
+       PIE DE PÁGINA (compartido)
+       ======================================== -->
+  <footer>
+    <p>
+      <strong>Proyecto Vida Saludable</strong> &nbsp;·&nbsp;
+      Proyecto Productivo de Grado &nbsp;·&nbsp;
+      Media Técnica en Programación
+    </p>
+    <p style="margin-top: 0.4rem;">
+      Combatimos el sedentarismo para el éxito integral de nuestra comunidad educativa.
+    </p>
+  </footer>
+
+  <!-- ========================================
+       JAVASCRIPT
+       Lógica interactiva del formulario
+       ======================================== -->
+  <script>
+    // --- Barra de progreso de hidratación ---
+    // Escuchamos cada cambio en el campo de vasos
+    const inputVasos = document.getElementById('vasos');
+    const barra      = document.getElementById('barra');
+    const textoMeta  = document.getElementById('progreso-texto');
+    const nota       = document.getElementById('nota-hidratacion');
+
+    inputVasos.addEventListener('input', function () {
+      const vasos     = Math.min(parseInt(this.value) || 0, 8);
+      const porcentaje = (vasos / 8) * 100;
+
+      // Actualizamos el ancho de la barra visualmente
+      barra.style.width = porcentaje + '%';
+      textoMeta.textContent = vasos + ' de 8 vasos';
+
+      // Mostramos un mensaje motivador según el progreso
+      if (vasos >= 8) {
+        nota.textContent = '¡Felicitaciones! Cumpliste tu meta de hidratación hoy. 💪';
+        nota.style.color = 'var(--verde-principal)';
+      } else {
+        const faltantes = 8 - vasos;
+        nota.textContent = `Te faltan ${faltantes} vasos (${(faltantes * 0.25).toFixed(2)} litros) para tu meta.`;
+        nota.style.color = 'var(--gris-texto)';
+      }
+    });
+
+    // --- Envío del formulario ---
+    // Mostramos el mensaje de confirmación al registrar el perfil
+    document.getElementById('formulario-perfil').addEventListener('submit', function (e) {
+      e.preventDefault(); // Evitamos que la página se recargue
+      document.getElementById('mensaje-confirmacion').style.display = 'block';
+
+      // Subimos la pantalla suavemente hasta el mensaje
+      document.getElementById('mensaje-confirmacion').scrollIntoView({ behavior: 'smooth' });
+    });
+  </script>
+
+</body>
+</html>

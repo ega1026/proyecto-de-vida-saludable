@@ -1,0 +1,275 @@
+/* ============================================
+   PROYECTO VIDA SALUDABLE - style.css
+   Versión básica - Avance semana 2
+   ============================================ */
+
+/* Importamos fuente de Google */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+/* Variables de colores del proyecto */
+:root {
+  --verde:       #2e7d50;
+  --verde-claro: #eaf5ee;
+  --azul:        #1976a8;
+  --blanco:      #ffffff;
+  --gris-fondo:  #f4f6f4;
+  --gris-texto:  #555555;
+  --gris-borde:  #d0ddd4;
+  --negro:       #1a2620;
+}
+
+/* Reset básico */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--gris-fondo);
+  color: var(--negro);
+  line-height: 1.6;
+}
+
+a { color: var(--verde); text-decoration: none; }
+
+/* HEADER */
+header {
+  background: var(--blanco);
+  border-bottom: 2px solid var(--gris-borde);
+  padding: 0 1.5rem;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo { font-size: 1.1rem; font-weight: 700; color: var(--verde); }
+
+nav a { margin-left: 1rem; font-size: 0.9rem; color: var(--gris-texto); font-weight: 600; }
+nav a.activo { color: var(--verde); }
+
+/* HERO */
+.hero {
+  background: var(--verde);
+  color: var(--blanco);
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+
+.hero h1 { font-size: 2rem; font-weight: 700; margin-bottom: 0.75rem; }
+
+.hero p {
+  font-size: 0.95rem;
+  opacity: 0.85;
+  max-width: 480px;
+  margin: 0 auto 1.75rem;
+}
+
+/* BOTONES */
+.btn {
+  display: inline-block;
+  padding: 0.65rem 1.5rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn-blanco { background: var(--blanco); color: var(--verde); }
+
+.btn-verde {
+  background: var(--verde);
+  color: var(--blanco);
+  width: 100%;
+  text-align: center;
+  padding: 0.75rem;
+  font-size: 0.95rem;
+  display: block;
+}
+
+.btn-borde {
+  background: transparent;
+  color: var(--blanco);
+  border: 2px solid rgba(255,255,255,0.6);
+  margin-left: 0.75rem;
+}
+
+/* SECCIÓN GENERAL */
+.seccion {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+}
+
+.seccion h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 0.5rem; }
+.seccion > p { color: var(--gris-texto); margin-bottom: 2rem; font-size: 0.9rem; }
+
+/* Grid de tarjetas */
+.grid-tarjetas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.tarjeta {
+  background: var(--blanco);
+  border: 1.5px solid var(--gris-borde);
+  border-radius: 10px;
+  padding: 1.25rem;
+}
+
+.tarjeta-icono { font-size: 1.5rem; margin-bottom: 0.6rem; }
+.tarjeta h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.3rem; }
+.tarjeta p { font-size: 0.83rem; color: var(--gris-texto); }
+
+/* FORMULARIO PERFIL */
+.pagina-perfil {
+  max-width: 580px;
+  margin: 2.5rem auto;
+  padding: 0 1.5rem;
+}
+
+.pagina-perfil h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.3rem; }
+.pagina-perfil > p { color: var(--gris-texto); font-size: 0.88rem; margin-bottom: 1.5rem; }
+
+.formulario-card {
+  background: var(--blanco);
+  border: 1.5px solid var(--gris-borde);
+  border-radius: 10px;
+  padding: 1.75rem;
+}
+
+.campo-grupo { margin-bottom: 1rem; }
+
+.campo-grupo label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+}
+
+.campo-grupo input,
+.campo-grupo select {
+  width: 100%;
+  padding: 0.6rem 0.9rem;
+  border: 1.5px solid var(--gris-borde);
+  border-radius: 7px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+  background: var(--gris-fondo);
+  outline: none;
+}
+
+.campo-grupo input:focus,
+.campo-grupo select:focus {
+  border-color: var(--verde);
+  background: var(--blanco);
+}
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+.form-titulo {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--verde);
+  margin-bottom: 1rem;
+}
+
+.form-seccion {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--gris-borde);
+}
+
+.form-seccion:last-of-type {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+/* LOGIN */
+.login-pagina {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--gris-fondo);
+  padding: 2rem 1.5rem;
+}
+
+.login-caja {
+  background: var(--blanco);
+  border: 1.5px solid var(--gris-borde);
+  border-radius: 12px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 400px;
+}
+
+.login-logo {
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--verde);
+  margin-bottom: 1.5rem;
+}
+
+.login-caja h1 { font-size: 1.3rem; font-weight: 700; margin-bottom: 0.3rem; }
+.login-caja > p { color: var(--gris-texto); font-size: 0.85rem; margin-bottom: 1.5rem; }
+
+.error-msg {
+  display: none;
+  background: #fff0f0;
+  border: 1px solid #fcc;
+  color: #c0392b;
+  border-radius: 7px;
+  padding: 0.6rem 0.9rem;
+  font-size: 0.83rem;
+  margin-bottom: 1rem;
+}
+
+.exito-msg {
+  display: none;
+  background: var(--verde-claro);
+  border: 1px solid #b2dfcc;
+  color: var(--verde);
+  border-radius: 7px;
+  padding: 0.6rem 0.9rem;
+  font-size: 0.83rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.login-registro {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.83rem;
+  color: var(--gris-texto);
+}
+
+.login-registro a { color: var(--verde); font-weight: 600; }
+
+/* FOOTER */
+footer {
+  background: var(--negro);
+  color: rgba(255,255,255,0.55);
+  text-align: center;
+  padding: 1.5rem;
+  font-size: 0.8rem;
+}
+
+footer strong { color: rgba(255,255,255,0.85); }
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+  .hero h1 { font-size: 1.5rem; }
+  .grid-2  { grid-template-columns: 1fr; }
+  .seccion { padding: 2rem 1.25rem; }
+  .pagina-perfil { margin: 1.5rem auto; }
+}

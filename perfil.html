@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mi Perfil – Proyecto Vida Saludable</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ENCABEZADO -->
+  <header>
+    <div class="logo">🌿 Vida Saludable</div>
+    <nav>
+      <a href="index.html">Inicio</a>
+      <a href="perfil.html" class="activo">Mi Perfil</a>
+      <a href="login.html">Ingresar</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="pagina-perfil">
+
+      <h1>Mi Perfil</h1>
+      <p>Completa tus datos para registrarte en el sistema.</p>
+
+      <!-- FORMULARIO DE REGISTRO -->
+      <div class="formulario-card">
+        <form id="formulario-perfil">
+
+          <!-- Sección 1: Datos personales -->
+          <div class="form-seccion">
+            <p class="form-titulo">📋 Datos del estudiante</p>
+
+            <!-- Nombre -->
+            <div class="campo-grupo">
+              <label for="nombre">Nombre completo</label>
+              <input type="text" id="nombre" name="nombre" placeholder="Ej: Laura Martínez" required />
+            </div>
+
+            <!-- Edad y Grado en dos columnas -->
+            <div class="grid-2">
+              <div class="campo-grupo">
+                <label for="edad">Edad</label>
+                <input type="number" id="edad" name="edad" placeholder="Ej: 14" min="6" max="20" required />
+              </div>
+
+              <div class="campo-grupo">
+                <label for="grado">Grado</label>
+                <select id="grado" name="grado" required>
+                  <option value="" disabled selected>Seleccionar…</option>
+                  <option value="4">4°</option>
+                  <option value="5">5°</option>
+                  <option value="6">6°</option>
+                  <option value="7">7°</option>
+                  <option value="8">8°</option>
+                  <option value="9">9°</option>
+                  <option value="10">10°</option>
+                  <option value="11">11°</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sección 2: Hidratación -->
+          <div class="form-seccion">
+            <p class="form-titulo">💧 Hidratación diaria</p>
+
+            <div class="campo-grupo">
+              <label for="vasos">¿Cuántos vasos de agua tomaste hoy?</label>
+              <input type="number" id="vasos" name="vasos" placeholder="Ej: 5" min="0" max="15" />
+            </div>
+
+            <p style="font-size: 0.8rem; color: var(--gris-texto);">
+              Meta diaria: 8 vasos = 2 litros de agua.
+            </p>
+          </div>
+
+          <!-- Sección 3: Botón enviar -->
+          <div class="form-seccion">
+            <button type="submit" class="btn btn-verde">
+              ✅ Registrar mi perfil
+            </button>
+          </div>
+
+          <!-- Mensaje de confirmación (aparece al enviar) -->
+          <div id="confirmacion" style="display:none; text-align:center; padding: 0.9rem;
+               background: var(--verde-claro); border-radius: 8px;
+               color: var(--verde); font-weight: 600; margin-top: 0.75rem;">
+            🎉 ¡Datos registrados! Pronto verás tu progreso en el Tablero Visual.
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- PIE DE PÁGINA -->
+  <footer>
+    <p>
+      <strong>Proyecto Vida Saludable</strong> &nbsp;·&nbsp;
+      Proyecto Productivo de Grado &nbsp;·&nbsp;
+      Media Técnica en Programación
+    </p>
+  </footer>
+
+  <!-- Lógica básica: mostrar confirmación al enviar -->
+  <script>
+    document.getElementById('formulario-perfil').addEventListener('submit', function (e) {
+      e.preventDefault();
+      document.getElementById('confirmacion').style.display = 'block';
+    });
+  </script>
+
+</body>
+</html>
