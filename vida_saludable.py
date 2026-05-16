@@ -2,15 +2,48 @@
 # PROYECTO VIDA SALUDABLE - Archivo Principal
 # vida_saludable.py
 # ============================================
+import sqlite3
 
 # Importamos los módulos de nuestro proyecto
 from perfil      import capturar_perfil, ver_perfil
 from hidratacion import registrar_hidratacion
 from menu        import mostrar_bienvenida, mostrar_menu
 
+# --- FUNCIÓN INTERNA: Crear las tablas si no existen ---
+def verificar_base_de_datos():
+    conexion = sqlite3.connect('vida_saludable.db')
+    cursor = conexion.cursor()
+    
+    # Creamos la tabla de perfiles si no existe
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS perfiles (
+            id_perfil INTEGER PRIMARY KEY,
+            nombre TEXT NOT NULL,
+            edad INTEGER NOT NULL,
+            grado TEXT NOT NULL,
+            categoria TEXT NOT NULL,
+            actividad_recomendada TEXT NOT NULL
+        )
+    ''')
+    
+    # Creamos la tabla de hidratación con el campo 'fecha' exacto
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS hidratacion (
+            id_registro INTEGER PRIMARY KEY AUTOINCREMENT,
+            vasos_tomados INTEGER NOT NULL,
+            fecha TEXT UNIQUE NOT NULL
+        )
+    ''')
+    
+    conexion.commit()
+    conexion.close()
+
 # ============================================================
 # PROGRAMA PRINCIPAL - Aquí arranca todo el sistema
 # ============================================================
+
+# 1. Aseguramos que la base de datos esté creada antes de iniciar
+verificar_base_de_datos()
 
 mostrar_bienvenida()
 
@@ -29,7 +62,6 @@ while ejecutando:
         registrar_hidratacion()
 
     elif opcion == "3":
-        # Mensaje de despedida enfocado en el bienestar corporal
         print()
         print("  ¡Hasta pronto! Recuerda que un cuerpo")
         print("  activo e hidratado potencia tu bienestar")
