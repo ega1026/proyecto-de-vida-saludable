@@ -1,73 +1,76 @@
-# ============================================
-# PROYECTO VIDA SALUDABLE - Archivo Principal
-# vida_saludable.py
-# ============================================
 import sqlite3
+import urllib.parse
+from http.server import SimpleHTTPRequestHandler, HTTPServer
+from datetime import datetime
 
-# Importamos los módulos de nuestro proyecto
-from perfil      import capturar_perfil, ver_perfil
-from hidratacion import registrar_hidratacion
-from menu        import mostrar_bienvenida, mostrar_menu
+DATABASE = 'vida_saludable.db'
 
-# --- FUNCIÓN INTERNA: Crear las tablas si no existen ---
-def verificar_base_de_datos():
-    conexion = sqlite3.connect('vida_saludable.db')
-    cursor = conexion.cursor()
-    
-    # Creamos la tabla de perfiles si no existe
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS perfiles (
-            id_perfil INTEGER PRIMARY KEY,
-            nombre TEXT NOT NULL,
-            edad INTEGER NOT NULL,
-            grado TEXT NOT NULL,
-            categoria TEXT NOT NULL,
-            actividad_recomendada TEXT NOT NULL
-        )
-    ''')
-    
-    # Creamos la tabla de hidratación con el campo 'fecha' exacto
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS hidratacion (
-            id_registro INTEGER PRIMARY KEY AUTOINCREMENT,
-            vasos_tomados INTEGER NOT NULL,
-            fecha TEXT UNIQUE NOT NULL
-        )
-    ''')
-    
-    conexion.commit()
-    conexion.close()
+def obtener_conexion():
+    conn = sqlite3.connect(DATABASE)
+    conn.row_factory = sqlite3.Row
+    return conn
 
-# ============================================================
-# PROGRAMA PRINCIPAL - Aquí arranca todo el sistema
-# ============================================================
+class ServidorVidaSaludable(SimpleHTTPRequestHandler):
+    def do_POST(self):
+        # Capturamos si la página web envía datos a /registrar_perfil
+        if self.path == '/registrar_perfil':
+            content_length = int(self.headers['Content-Length'])
+            post_data = self.rfile.read(content_length).decode('utf-8')
+            datos = urllib.parse.parse_qs(post_data)
 
-# 1. Aseguramos que la base de datos esté creada antes de iniciar
-verificar_base_de_datos()
+            # 1. Sacamos los datos del formulario
+            nombre = datos.get('nombre', [''])[0]
+            edad = int(datos.get('edad', [0])[0] or 0)
+            grado = datos.get('grado', [''])[0]
+            vasos = int(datos.get('vasos', [0])[0] or 0)
+            fecha_hoy = datetime.now().strftime('%Y-%m-%d')
 
-mostrar_bienvenida()
+            # 2. Clasificación según la edad
+            if edad <= 11:
+                categoria = 'Infantil'
+                actividad = 'Juegos activos y de flexibilidad'
+            elif edad <= 14:
+                categoria = 'Prejuvenil'
+                actividad = 'Coordinación, juegos de equipo y velocidad'
+            else:
+                categoria = 'Juvenil'
+                actividad = 'Resistencia cardiovascular y fuerza'
 
-# Primero capturamos el perfil antes de entrar al menú
-perfil_usuario = capturar_perfil()
+            # 3. Guardar directo en la Base de Datos SQLite
+            conexion = obtener_conexion()
+            cursor = conexion.cursor()
+            try:
+                cursor.execute('''
+                    INSERT OR REPLACE INTO perfiles (id_perfil, nombre, edad, grado, categoria, actividad_recomendada)
+                    VALUES (1, ?, ?, ?, ?, ?)
+                ''', (nombre, edad, grado, categoria, actividad))
 
-# El ciclo while mantiene el menú activo hasta que el usuario elija Salir
-ejecutando = True
-while ejecutando:
-    opcion = mostrar_menu()
+                cursor.execute('''
+                    INSERT OR REPLACE INTO hidratacion (vasos_tomados, fecha)
+                    VALUES (?, ?)
+                ''', (vasos, fecha_hoy))
 
-    if opcion == "1":
-        ver_perfil(perfil_usuario)
+                conexion.commit()
+                print(f"¡Firme! Se guardó a {nombre} con {vasos} vasos de agua.")
+            except Exception as e:
+                print(f"Error en la base de datos: {e}")
+            finally:
+                conexion.close()
 
-    elif opcion == "2":
-        registrar_hidratacion()
+            # Redireccionamos de vuelta a la página para que se actualice
+            self.send_response(303)
+            self.send_header('Location', '/perfil.html')
+            self.end_headers()
+        else:
+            super().do_POST()
 
-    elif opcion == "3":
-        print()
-        print("  ¡Hasta pronto! Recuerda que un cuerpo")
-        print("  activo e hidratado potencia tu bienestar")
-        print("  y tu rendimiento en el colegio.")
-        print("  — Proyecto Vida Saludable")
-        ejecutando = False  # Cambiamos la variable para detener el ciclo
+# Ponemos a correr el servidor nativo en el puerto 5000
+def run():
+    print("Iniciando servidor nativo en http://127.0.0.1:5000 ...")
+    server_address = ('', 5000)
+    httpd = HTTPServer(server_address, ServidorVidaSaludable)
+    print("¡Servidor prendido firmito! Ya puedes abrir el navegador.")
+    httpd.serve_forever()
 
-    else:
-        print("  Opción no válida. Intenta con 1, 2 o 3.\n")
+if __name__ == '__main__':
+    run()
